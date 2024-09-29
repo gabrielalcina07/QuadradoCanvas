@@ -1,0 +1,80 @@
+<!--
+Programa: Movimento do Quadrado
+Nome: Eduardo Castilho - Nº: 05 - Turma: 2°B
+Nome: Gabriel Oliveira - Nº 09
+Nome: Igor Bailoni - Nº: 14
+Nome: Kauã Stelin - Nº: 16
+Nome: Leandro Marçal - Nº: 18
+DESCRIÇÃO: O nosso código cria um componente (quadrado), e faz com que ele se mova para diferentes posições assim que apertar os botões.
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Movimento do Quadrado</title>
+    <link rel="stylesheet" href="stt.css">
+</head>
+<body>
+    <h1>Mova o Quadrado</h1>
+    <canvas id="canvas" width="400" height="400" style="border:1px solid #000000;"></canvas>
+
+    <div class="botoes-container">
+        <button class="botao" onmousedown="iniciarMovimento('cima')" onmouseup="pararMovimento()">Cima</button>
+        <button class="botao" onmousedown="iniciarMovimento('baixo')" onmouseup="pararMovimento()">Baixo</button>
+        <button class="botao" onmousedown="iniciarMovimento('esquerda')" onmouseup="pararMovimento()">Esquerda</button>
+        <button class="botao" onmousedown="iniciarMovimento('direita')" onmouseup="pararMovimento()">Direita</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        var quadrado = { 
+          x: 175,
+          y: 175,
+          tamanho: 50,
+          passo: 10 
+        }
+        var intervaloMovimento;
+
+        function desenharQuadrado() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas
+            ctx.fillStyle = 'red';
+            ctx.fillRect(quadrado.x, quadrado.y, quadrado.tamanho, quadrado.tamanho); // Desenha o quadrado
+        }
+
+        function mover(direcao) {
+            if (direcao === 'cima') {
+                quadrado.y -= quadrado.passo;
+                if (quadrado.y < 0) quadrado.y = 0; // Impede de sair pela parte de cima
+            }
+            if (direcao === 'baixo') {
+                quadrado.y += quadrado.passo;
+                if (quadrado.y > canvas.height - quadrado.tamanho) quadrado.y = canvas.height - quadrado.tamanho; // Impede de sair pela parte de baixo
+            }
+            if (direcao === 'esquerda') {
+                quadrado.x -= quadrado.passo;
+                if (quadrado.x < 0) quadrado.x = 0; // Impede de sair pela esquerda
+            }
+            if (direcao === 'direita') {
+                quadrado.x += quadrado.passo;
+                if (quadrado.x > canvas.width - quadrado.tamanho) quadrado.x = canvas.width - quadrado.tamanho; // Impede de sair pela direita
+            }
+            desenharQuadrado();
+        }
+
+        // Inicia o movimento contínuo
+        function iniciarMovimento(direcao) {
+            intervaloMovimento = setInterval(() => mover(direcao), 100);
+        }
+
+        // Para o movimento quando o botão é solto
+        function pararMovimento() {
+            clearInterval(intervaloMovimento);
+        }
+
+        // Desenha o quadrado inicialmente
+        desenharQuadrado();
+    </script>
+</body>
+</html>
